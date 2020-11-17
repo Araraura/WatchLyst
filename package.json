@@ -1,0 +1,16 @@
+{
+  "name": "watchlyst",
+  "version": "1.0.0",
+  "description": "Allows admins/moderators to create a list of potentially dangerous users which will notify them if one of them joins the server.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Araraura",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.16.1",
+    "discord.js": "^12.4.1",
+    "pg": "^8.5.1"
+  }
+}

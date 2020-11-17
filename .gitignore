@@ -1,0 +1,5 @@
+node_modules
+watchlyst-config.json
+database-info.js
+.eslintrc.json
+bugs.txt
