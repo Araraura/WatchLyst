@@ -1,7 +1,7 @@
 {
   "name": "watchlyst",
   "version": "1.0.0",
-  "description": "Allows admins/moderators to create a list of potentially dangerous users which will notify them if one of them joins the server.",
+  "description": "A bot which lets a Discord's server staff to create a list of troublesome users which will notify them once they join the server.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
 const { author } = require('../watchlyst-config.json');
 const { Pool } = require('pg');
-const dbInfo = require('../database-info');
 
 module.exports = {
     name: 'add',
