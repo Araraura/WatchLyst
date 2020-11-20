@@ -15,7 +15,13 @@ module.exports = {
             database: database,
         });
 
-        guild.members.fetch(guild.ownerID).then((ownerID) => ownerID.send('Thank you for adding WatchLyst to your server! Make sure to use `!w help` and `!w setup` in the server.'));
+        guild.members
+            .fetch(guild.ownerID)
+            .then((ownerID) =>
+                ownerID.send(
+                    "Thank you for adding WatchLyst to your server! Make sure to use `!w help` and `!w setup` in the server. Please note that if you don't assign a channel to the bot, you will be DMed when a troublesome user joins."
+                )
+            );
         const client = await pool.connect();
         try {
             await client.query('BEGIN');
@@ -33,7 +39,7 @@ module.exports = {
                 .then((ownerID) => ownerID.send(`An error occured when joining the server, please reinvite me again. If the error persist, contact ${author} for help. \`${ex}\``));
             return console.log(ex);
         } finally {
-            client.release()
+            client.release();
         }
     },
 };

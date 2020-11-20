@@ -67,12 +67,12 @@ module.exports = {
                     // If the User isn't in the list, adds it (With reason)
                     if (results.rows[0] === undefined) {
                         // Checks if the User is already banned in the server
-                        const banList = await message.guild.fetchBans();
-                        const bannedUser = banList.find((user) => user.id === results.rows[0]);
-                        if (bannedUser) {
-                            const userBanned = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`Error: <@${args[0]}> is already banned in this server.`);
-                            return message.channel.send(userBanned);
-                        }
+                        //!const banList = await message.guild.fetchBans();
+                        //!const bannedUser = banList.find((user) => user.id === results.rows[0]);
+                        //!if (bannedUser) {
+                        //!    const userBanned = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`Error: <@${args[0]}> is already banned in this server.`);
+                        //!    return message.channel.send(userBanned);
+                        //!}
                         // Successful insert
                         await client.query(
                             `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
