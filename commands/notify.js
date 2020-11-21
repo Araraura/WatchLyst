@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
 const { author } = require('../watchlyst-config.json');
+const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const { format } = require('date-fns');
 
@@ -26,15 +27,15 @@ module.exports = {
             // Runs if a listed user joins the server
             if (results.rows[0] === undefined) return;
             else if (results.rows !== undefined) {
-                const notifyServer = await client.query(`SELECT server_id, channel_id, role_id FROM public.servers WHERE server_id = '${guildMember.guild.id}'`);
+                const notifyServer = await client.query(`SELECT server_id, channel_id, role_id, toggle_ping FROM public.servers WHERE server_id = '${guildMember.guild.id}'`);
                 // If a server has an assigned channel, sends there
                 if (notifyServer.rows[0].channel_id !== null) {
                     const notify = new Discord.MessageEmbed()
                         .setColor('#ea9a00')
                         .setTitle(`Warning - ID ${userNotify.rows[0].user_id} has joined the server.`)
                         .setDescription(`${userNotify.rows[0].reason} | Listed at ${format(userNotify.rows[0].date_added, 'MMM dd yyyy')} | Listed by ${userNotify.rows[0].added_by}`);
-                    // If a server has an assigned role and the channel it's sending in isn't deleted, pings it
-                    if (notifyServer.rows[0].role_id !== null && guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id) !== undefined) {
+                    // If a server has an assigned role and the channel it's sending in isn't deleted and toggle ping is on, pings it
+                    if (notifyServer.rows[0].role_id !== null && guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id) !== undefined && notifyServer.rows[0].toggle_ping) {
                         guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id).send(`<@&${notifyServer.rows[0].role_id}> - WatchLyst notification`);
                     }
                     // If the assigned channel has been deleted
@@ -63,7 +64,7 @@ module.exports = {
         } catch (ex) {
             guildMember.guild.members
                 .fetch(guildMember.guild.ownerID)
-                .then((ownerID) => ownerID.send(`An error occured when trying to notify of a listed user. If the error persist, contact ${author} for help. \`${ex}\``));
+                .then((ownerID) => ownerID.send(`${Emoji.Error} An error occured when trying to notify of a listed user. If the error persist, contact ${author} for help. \`${ex}\``));
             return console.log(ex);
         } finally {
             client.release();

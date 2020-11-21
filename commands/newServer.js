@@ -28,7 +28,7 @@ module.exports = {
             const results = await client.query(`SELECT server_id FROM public.servers WHERE server_id = '${guild.id}'`);
             if (results.rows[0] === undefined) {
                 await client.query('BEGIN');
-                await client.query(`INSERT INTO public.servers (server_id) VALUES ('${guild.id}')`);
+                await client.query(`INSERT INTO public.servers (server_id, toggle_ping) VALUES ('${guild.id}', FALSE)`);
                 console.log(`Added new server to DB (${guild.id})`);
             }
             await client.query('COMMIT');

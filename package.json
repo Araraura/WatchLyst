@@ -1,6 +1,6 @@
 {
   "name": "watchlyst",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A bot which lets a Discord's server staff to create a list of troublesome users which will notify them once they join the server.",
   "main": "main.js",
   "scripts": {
