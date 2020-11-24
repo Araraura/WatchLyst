@@ -15,7 +15,7 @@ const helpCommand = new Discord.MessageEmbed()
         { name: "Displays a list of users in the server's WatchLyst", value: '`!w list`' },
         { name: 'List of server setup commands (Admin Only)', value: '`!w setup`' }
     )
-    .setFooter('Version 1.0.2 | Note: WatchLyst is still in early release. Bugs and missing features may be common.');
+    .setFooter('Version 1.0.3 | Note: WatchLyst is still in early release. Bugs and missing features may be common.');
 
 module.exports = {
     name: 'help',
