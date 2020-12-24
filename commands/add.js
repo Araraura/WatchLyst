@@ -40,18 +40,23 @@ module.exports = {
                     const results = await client.query(`SELECT user_id FROM public.user_list WHERE server_id = '${message.guild.id}' AND user_id = '${args[0]}'`);
                     // If the User isn't in the list, adds it (Without reason)
                     if (results.rows[0] === undefined) {
-                        // Checks if the User is already banned in the server
                         try {
-                            await message.guild.fetchBan(args[0]);
-                            const userBanned = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
-                            return message.channel.send(userBanned);
-                        } catch (e) {
-                            // Successful insert
-                            await client.query(
-                                `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
-                                    message.guild.id
-                                }', current_date, 'No reason provided', '${message.author.tag.replace("'", '’')}')`
-                            );
+                            const presentUserMessage = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already in the server.`);
+                            return await message.guild.members.fetch(args[0]).then((presentUser) => message.channel.send(presentUserMessage));
+                        } catch {
+                            // Checks if the User is already banned in the server
+                            try {
+                                await message.guild.fetchBan(args[0]);
+                                const userBanned = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
+                                return message.channel.send(userBanned);
+                            } catch (e) {
+                                // Successful insert
+                                await client.query(
+                                    `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
+                                        message.guild.id
+                                    }', current_date, 'No reason provided', '${message.author.tag.replace("'", '’')}')`
+                                );
+                            }
                         }
                     } else if (results.rows[0] !== undefined) {
                         const userExists = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already in the server's WatchLyst.`);
@@ -61,9 +66,9 @@ module.exports = {
                 } else if (args[0].length === 18 && args[1] !== undefined) {
                     let argsJoin = args.slice(1).join(' ');
                     let reason = argsJoin.replace("'", '’');
-                    // Gives an error if the reason provided is longer than 1000 characters
-                    if (reason.length > 1000) {
-                        const reasonTooLong = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: Reason for adding cannot be longer than 1000 characters.`);
+                    // Gives an error if the reason provided is longer than 512 characters
+                    if (reason.length > 512) {
+                        const reasonTooLong = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: Reason for adding cannot be longer than 512 characters.`);
                         return message.channel.send(reasonTooLong);
                     }
                     // Checks if user already exists in the list
@@ -71,18 +76,24 @@ module.exports = {
                     const results = await client.query(`SELECT user_id FROM public.user_list WHERE server_id = '${message.guild.id}' AND user_id = '${args[0]}'`);
                     // If the User isn't in the list, adds it (With reason)
                     if (results.rows[0] === undefined) {
-                        // Checks if the User is already banned in the server
+                        // Checks if the user is already in the server
                         try {
-                            await message.guild.fetchBan(args[0]);
-                            const userBanned = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
-                            return message.channel.send(userBanned);
+                            const presentUserMessage = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already in the server.`);
+                            return await message.guild.members.fetch(args[0]).then((presentUser) => message.channel.send(presentUserMessage));
                         } catch (e) {
-                            // Successful insert
-                            await client.query(
-                                `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
-                                    message.guild.id
-                                }', current_date, '${reason}', '${message.author.tag.replace("'", '’')}')`
-                            );
+                            // Checks if the User is already banned in the server
+                            try {
+                                await message.guild.fetchBan(args[0]);
+                                const userBanned = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
+                                return message.channel.send(userBanned);
+                            } catch (e) {
+                                // Successful insert
+                                await client.query(
+                                    `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
+                                        message.guild.id
+                                    }', current_date, '${reason}', '${message.author.tag.replace("'", '’')}')`
+                                );
+                            }
                         }
                     } else if (results.rows[0] !== undefined) {
                         const userExists = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: <@${args[0]}> is already in the server's WatchLyst.`);

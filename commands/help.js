@@ -8,14 +8,14 @@ const helpCommand = new Discord.MessageEmbed()
     .setColor('#ea9a00')
     .setAuthor(`Made by ${author}`, `${authorAvatar}`)
     .setTitle('WatchLyst - List of commands')
-    .setDescription('[Version Changelog](https://pastebin.com/raw/wpJD9qC6)')
+    .setDescription(`${Emoji.GitHub} [GitHub Repository](https://github.com/Araraura/WatchLyst)`)
     .addFields(
-        { name: 'Adds a user to the WatchLyst', value: '`!w add <user ID> <reason (Optional, max 1,000 characters)>`' },
-        { name: 'Removes a user from the WatchLyst', value: '`!w remove <user ID>`' },
-        { name: "Displays a list of users in the server's WatchLyst", value: '`!w list`' },
+        { name: 'Adds a user to the WatchLyst', value: '`!w add <User ID> <Reason (Optional, max 512 characters)>`' },
+        { name: 'Removes a user from the WatchLyst', value: '`!w remove <User ID>`' },
+        { name: "Displays a list of users in the server's WatchLyst", value: '`!w list <Page>`' },
         { name: 'List of server setup commands (Admin Only)', value: '`!w setup`' }
     )
-    .setFooter('Version 1.0.3 | Note: WatchLyst is still in early release. Bugs and missing features may be common.');
+    .setFooter('Version 1.1.0 | Note: WatchLyst is still in early release. Bugs and missing features may be common.');
 
 module.exports = {
     name: 'help',
@@ -30,7 +30,7 @@ module.exports = {
         });
         const client = await pool.connect();
         if (message.guild === null) {
-            helpCommand.setDescription('[Add me to your server!](https://discord.com/oauth2/authorize?client_id=765240772781932555&scope=bot&permissions=84996) • [Version Changelog](https://pastebin.com/raw/wpJD9qC6)');
+            helpCommand.setDescription(`[Add me to your server!](https://discord.com/oauth2/authorize?client_id=765240772781932555&scope=bot&permissions=84996) • ${Emoji.GitHub} [GitHub Repository](https://github.com/Araraura/WatchLyst)`);
             return message.channel.send(helpCommand);
         }
         const permissionCheck = await client.query(`SELECT role_id FROM public.servers WHERE server_id = '${message.guild.id}'`);
