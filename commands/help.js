@@ -15,7 +15,7 @@ const helpCommand = new Discord.MessageEmbed()
         { name: "Displays a list of users in the server's WatchLyst", value: '`!w list <Page>`' },
         { name: 'List of server setup commands (Admin Only)', value: '`!w setup`' }
     )
-    .setFooter('Version 1.1.0 | Note: WatchLyst is still in early release. Bugs and missing features may be common.');
+    .setFooter('Version 1.1.1 | Note: WatchLyst is still in early release. Bugs and missing features may be common.');
 
 module.exports = {
     name: 'help',
@@ -30,7 +30,9 @@ module.exports = {
         });
         const client = await pool.connect();
         if (message.guild === null) {
-            helpCommand.setDescription(`[Add me to your server!](https://discord.com/oauth2/authorize?client_id=765240772781932555&scope=bot&permissions=84996) • ${Emoji.GitHub} [GitHub Repository](https://github.com/Araraura/WatchLyst)`);
+            helpCommand.setDescription(
+                `[Add me to your server!](https://discord.com/oauth2/authorize?client_id=765240772781932555&scope=bot&permissions=84996) • ${Emoji.GitHub} [GitHub Repository](https://github.com/Araraura/WatchLyst)`
+            );
             return message.channel.send(helpCommand);
         }
         const permissionCheck = await client.query(`SELECT role_id FROM public.servers WHERE server_id = '${message.guild.id}'`);

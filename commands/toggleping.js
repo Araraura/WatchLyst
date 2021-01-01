@@ -42,7 +42,7 @@ module.exports = {
                     return message.channel.send(toggleResult);
                 }
             } catch (ex) {
-                const exceptionOccured = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`Error: Something went wrong when toggling a role ping. Contact ${author} for help. \`${ex}\``);
+                const exceptionOccured = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`Error: Something went wrong when toggling a role ping. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``);
                 message.channel.send(exceptionOccured);
                 await client.query('ROLLBACK');
             } finally {

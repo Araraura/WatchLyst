@@ -28,7 +28,9 @@ module.exports = {
             try {
                 // Check if the Role ID isn't 18 characters long, or if it contains non-digit characters
                 if (args[0].length !== 18 || /\D/.test(args[0])) {
-                    const invalidID = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: Role IDs must consist of 18 digits (Type \`!w setup\` for list of setup commands).`);
+                    const invalidID = new Discord.MessageEmbed()
+                        .setColor('#e86b6b')
+                        .setDescription(`${Emoji.Error} Error: Role IDs must consist of 18 digits (Type \`!w setup\` for list of setup commands).`);
                     return message.channel.send(invalidID);
                     // Checks if the Role ID is 18 characters long and updates
                 } else if (args[0].length === 18) {
@@ -39,7 +41,9 @@ module.exports = {
                     return message.channel.send(roleCommand);
                 }
             } catch (ex) {
-                const exceptionOccured = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: Something went wrong when setting up a role. Contact ${author} for help. \`${ex}\``);
+                const exceptionOccured = new Discord.MessageEmbed()
+                    .setColor('#e86b6b')
+                    .setDescription(`${Emoji.Error} Error: Something went wrong when setting up a role. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``);
                 message.channel.send(exceptionOccured);
                 await client.query('ROLLBACK');
             } finally {

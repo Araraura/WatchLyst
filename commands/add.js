@@ -54,7 +54,7 @@ module.exports = {
                                 await client.query(
                                     `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
                                         message.guild.id
-                                    }', current_date, 'No reason provided', '${message.author.tag.replace("'", '’')}')`
+                                    }', current_date, 'No reason provided', '${message.author.tag.replace(/'/g, '’')}')`
                                 );
                             }
                         }
@@ -65,7 +65,7 @@ module.exports = {
                     // Checks if the User to the list if the User ID is 18 characters long and a reason for adding the user was provided
                 } else if (args[0].length === 18 && args[1] !== undefined) {
                     let argsJoin = args.slice(1).join(' ');
-                    let reason = argsJoin.replace("'", '’');
+                    let reason = argsJoin.replace(/'/g, '’');
                     // Gives an error if the reason provided is longer than 512 characters
                     if (reason.length > 512) {
                         const reasonTooLong = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: Reason for adding cannot be longer than 512 characters.`);
@@ -91,7 +91,7 @@ module.exports = {
                                 await client.query(
                                     `INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
                                         message.guild.id
-                                    }', current_date, '${reason}', '${message.author.tag.replace("'", '’')}')`
+                                    }', current_date, '${reason}', '${message.author.tag.replace(/'/g, '’')}')`
                                 );
                             }
                         }
@@ -106,7 +106,7 @@ module.exports = {
             } catch (ex) {
                 const exceptionOccured = new Discord.MessageEmbed()
                     .setColor('#e86b6b')
-                    .setDescription(`${Emoji.Error} Error: Something went wrong when adding a user. Contact ${author} for help. \`${ex}\``);
+                    .setDescription(`${Emoji.Error} Error: Something went wrong when adding a user. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``);
                 message.channel.send(exceptionOccured);
                 await client.query('ROLLBACK');
             } finally {

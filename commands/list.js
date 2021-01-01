@@ -97,7 +97,7 @@ module.exports = {
             } catch (ex) {
                 const exceptionOccured = new Discord.MessageEmbed()
                     .setColor('#e86b6b')
-                    .setDescription(`${Emoji.Error} Error: Something went wrong when bringing up a list. Contact ${author} for help. \`${ex}\``);
+                    .setDescription(`${Emoji.Error} Error: Something went wrong when bringing up a list. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``);
                 message.channel.send(exceptionOccured);
             } finally {
                 client.release();

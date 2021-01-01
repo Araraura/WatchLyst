@@ -64,7 +64,11 @@ module.exports = {
         } catch (ex) {
             guildMember.guild.members
                 .fetch(guildMember.guild.ownerID)
-                .then((ownerID) => ownerID.send(`${Emoji.Error} An error occured when trying to notify of a listed user. If the error persist, contact ${author} for help. \`${ex}\``));
+                .then((ownerID) =>
+                    ownerID.send(
+                        `${Emoji.Error} An error occured when trying to notify of a listed user. If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``
+                    )
+                );
             return console.log(ex);
         } finally {
             client.release();

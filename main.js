@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { token, prefix, author } = require('./watchlyst-config.json');
+const { Emoji } = require('./emojis.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -55,7 +56,9 @@ client.on('message', (message) => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        const errorMsg = new Discord.MessageEmbed().setColor('#ea9a00').setDescription(`There was an error trying to execute that command! Contact ${author}`);
+        const errorMsg = new Discord.MessageEmbed()
+            .setColor('#ea9a00')
+            .setDescription(`There was an error trying to execute that command! Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst).`);
     }
 });
 

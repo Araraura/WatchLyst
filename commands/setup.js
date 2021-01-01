@@ -7,7 +7,7 @@ const helpCommand = new Discord.MessageEmbed()
     .addFields(
         { name: 'Specify the channel where WatchLyst will notify when a listed user joins the server', value: '`!w channel <Channel ID>`' },
         { name: 'Specify a role that will get access to WatchLyst commands (Excluding admin commands)', value: '`!w role <Role ID>`' },
-        { name: 'Toggle whether or not the assigned role will be pinged once a listed member joins the server', value: '`!w toggleping`'}
+        { name: 'Toggle whether or not the assigned role will be pinged once a listed member joins the server', value: '`!w toggleping`' }
     );
 
 module.exports = {

@@ -1,5 +1,6 @@
 const { user, password, host, port, database } = require('../database-info');
 const { author } = require('../watchlyst-config.json');
+const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 
 module.exports = {
@@ -36,7 +37,7 @@ module.exports = {
         } catch (ex) {
             guild.members
                 .fetch(guild.ownerID)
-                .then((ownerID) => ownerID.send(`An error occured when joining the server, please reinvite me again. If the error persist, contact ${author} for help. \`${ex}\``));
+                .then((ownerID) => ownerID.send(`An error occured when joining the server, please reinvite me again. If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``));
             return console.log(ex);
         } finally {
             client.release();

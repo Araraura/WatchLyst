@@ -30,7 +30,9 @@ module.exports = {
             try {
                 // Check if the User ID isn't 18 characters long, or if it contains non-digit characters
                 if (args[0].length !== 18 || /\D/.test(args[0])) {
-                    const invalidID = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: User IDs must consist of 18 digits (Type \`!w help\` for list of commands).`);
+                    const invalidID = new Discord.MessageEmbed()
+                        .setColor('#e86b6b')
+                        .setDescription(`${Emoji.Error} Error: User IDs must consist of 18 digits (Type \`!w help\` for list of commands).`);
                     return message.channel.send(invalidID);
                     // Checks if the User ID is 18 characters long
                 } else if (args[0].length === 18) {
@@ -48,7 +50,9 @@ module.exports = {
                     return message.channel.send(removeCommand);
                 }
             } catch (ex) {
-                const exceptionOccured = new Discord.MessageEmbed().setColor('#e86b6b').setDescription(`${Emoji.Error} Error: Something went wrong when removing a user. Contact ${author} for help. \`${ex}\``);
+                const exceptionOccured = new Discord.MessageEmbed()
+                    .setColor('#e86b6b')
+                    .setDescription(`${Emoji.Error} Error: Something went wrong when removing a user. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](https://github.com/Araraura/WatchLyst). \`${ex}\``);
                 message.channel.send(exceptionOccured);
                 await client.query('ROLLBACK');
             } finally {
