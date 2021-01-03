@@ -25,3 +25,15 @@ A bot which lets a Discord's server staff to create a list of troublesome users 
 `!w role <Role ID>` Specify a role that will get access to WatchLyst commands (Excluding admin commands)
 
 `!w toggleping` Toggle whether or not the assigned role will be pinged once a listed member joins the server (Off by default)
+
+
+
+# Planned Features
+
+`!w check <User ID>` View a specific user in the server's WatchLyst
+
+`!w clear` An admin command which completely deletes an entire server's WatchLyst's listings
+
+a Daily check for banned users across the entire database. If a user is banned in a specific server, delete them from that server's WatchLyst
+
+**DangerLyst** - a Global database containing users that would be harmful to any sort of server, which mostly consists of ToS breaking users. People could suggest adding dangerous users to it (Assuming there is evidence of harmful behaviour) and servers could choose to opt-in or out of this feature.
