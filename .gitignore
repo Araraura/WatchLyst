@@ -1,7 +1,8 @@
+# Folders
 node_modules
+local
+
+# Files
 watchlyst-config.json
 database-info.js
 .eslintrc.json
-changelog
-Todo
-emojis
