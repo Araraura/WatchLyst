@@ -1,6 +1,7 @@
 const { MessageEmbed, Permissions } = require('discord.js');
-const { prefix, botYellow, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
+const PackageJson = require('../package.json');
 
 const helpCommand = new MessageEmbed()
 	.setColor(botYellow)
@@ -22,7 +23,16 @@ module.exports = {
 				setTimeout(() => msg.delete(), 10000);
 			});
 		} else {
-			return message.channel.send({ embeds: [helpCommand] });
+			try {
+				message.channel.send({ embeds: [helpCommand] });
+			} catch (ex) {
+				const exceptionOccurred = new MessageEmbed()
+					.setColor(botRed)
+					.setDescription(
+						`${Emoji.Error} Error: Something went wrong when trying to display WatchLyst setup commands. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
+					);
+				message.channel.send({ embeds: [exceptionOccurred] });
+			}
 		}
 	}
 };
