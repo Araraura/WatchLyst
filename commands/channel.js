@@ -24,7 +24,7 @@ module.exports = {
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+		} else {
 			const client = await pool.connect();
 			try {
 				// Check if the Channel ID isn't 18 characters long, or if it contains non-digit characters

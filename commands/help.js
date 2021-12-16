@@ -39,11 +39,11 @@ module.exports = {
 		const permissionCheck = await client.query(`SELECT role_id FROM public.servers WHERE server_id = '${message.guild.id}'`);
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) && !message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
-			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
+			message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
-			return message.channel.send({ embeds: [helpCommand] });
+		} else {
+			message.channel.send({ embeds: [helpCommand] });
 		}
 		client.release();
 	}

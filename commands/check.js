@@ -28,7 +28,7 @@ module.exports = {
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
+		} else {
 			try {
 				// Check if the User ID isn't 18 characters long, or if it contains non-digit characters
 				if (args[0].length !== 18 || /\D/.test(args[0])) {

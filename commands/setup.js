@@ -21,7 +21,7 @@ module.exports = {
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+		} else {
 			return message.channel.send({ embeds: [helpCommand] });
 		}
 	}

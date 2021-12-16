@@ -27,7 +27,7 @@ module.exports = {
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
+		} else {
 			try {
 				const results = await client.query(`SELECT user_id, date_added, reason, added_by FROM public.user_list WHERE server_id = '${message.guild.id}'`);
 				// User has not provided a page number
