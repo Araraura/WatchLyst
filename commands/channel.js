@@ -32,7 +32,7 @@ module.exports = {
 					const invalidID = new MessageEmbed()
 						.setColor(botRed)
 						.setDescription(`${Emoji.Error} Error: Channel IDs must consist of 18 digits (Type \`${prefix} setup\` for list of setup commands).`);
-					return message.channel.send(invalidID);
+					return message.channel.send({ embeds: [invalidID] });
 					// Checks if the Channel ID is 18 characters long and updates
 				} else if (args[0].length === 18) {
 					await client.query('BEGIN');

@@ -1,7 +1,7 @@
 {
 	"name": "watchlyst",
 	"version": "1.1.1",
-	"description": "A Discord bot which allows server staff to create a list of troublesome users, and will alert when one of the users join the server.",
+	"description": "This Discord bot allows server staff to create a list of troublesome users, and will alert when one of the users join the server.",
 	"homepage": "https://github.com/Araraura/WatchLyst",
 	"main": "main.js",
 	"scripts": {

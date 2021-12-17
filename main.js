@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('WatchLyst is online.');
-	client.user.setActivity(`${prefix} help`, { type: 'PLAYING' });
+	client.user.setActivity(`${prefix} help`, { type: 'LISTENING' });
 });
 
 client.on('guildCreate', (guild) => {
@@ -54,12 +54,12 @@ client.on('messageCreate', (message) => {
 	}
 
 	try {
-		command.execute(message, args);
-	} catch (error) {
-		console.error(error);
-		const ex = new MessageEmbed()
+		return command.execute(message, args);
+	} catch (ex) {
+		const exceptionOccurred = new MessageEmbed()
 			.setColor(botRed)
-			.setDescription(`There was an error trying to execute that command. Contact ${author} or open a new issue at ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``);
+			.setDescription(`${Emoji.Error} There was an error trying to execute that command. Contact ${author} or open a new issue at ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``);
+		return message.channel.send({ embeds: [exceptionOccurred] });
 	}
 });
 

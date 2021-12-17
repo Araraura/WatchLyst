@@ -17,13 +17,11 @@ module.exports = {
 			database: database
 		});
 
-		guild.members
-			.fetch(guild.ownerId)
-			.then((ownerId) =>
-				ownerId.send(
-					`Thank you for adding WatchLyst to ${guild.name}! Make sure to use \`${prefix} help\` and \`${prefix} setup\` in the server. Please note that if you do not assign a channel to the bot, you will receive a direct message when a listed user joins.`
-				)
-			);
+		guild.members.fetch(guild.ownerId).then((ownerId) =>
+			ownerId.send({
+				content: `Thank you for adding WatchLyst to ${guild.name}! Make sure to use \`${prefix} help\` and \`${prefix} setup\` in the server. Please note that if you do not assign a channel to the bot, you will receive a direct message when a listed user joins.`
+			})
+		);
 		const client = await pool.connect();
 		try {
 			await client.query('BEGIN');
@@ -31,16 +29,16 @@ module.exports = {
 			if (results.rows[0] === undefined) {
 				await client.query('BEGIN');
 				await client.query(`INSERT INTO public.servers (server_id, toggle_ping) VALUES ('${guild.id}', FALSE)`);
-				console.log(`Added a new server (${guild.id})`);
 			}
-			return await client.query('COMMIT');
+			await client.query('COMMIT');
+			return console.log(`Added a new server (${guild.id})`);
 		} catch (ex) {
 			return guild.members
 				.fetch(guild.ownerId)
 				.then((ownerId) =>
-					ownerId.send(
-						`An error occurred when WatchLyst tried to join ${guild.name}, please kick WatchLyst from the server and [reinvite it](${inviteLink}). If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
-					)
+					ownerId.send({
+						content: `An error occurred when WatchLyst tried to join ${guild.name}, please kick WatchLyst from the server and [reinvite it](${inviteLink}). If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
+					})
 				);
 		} finally {
 			client.release();
