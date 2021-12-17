@@ -33,16 +33,15 @@ module.exports = {
 				await client.query(`INSERT INTO public.servers (server_id, toggle_ping) VALUES ('${guild.id}', FALSE)`);
 				console.log(`Added a new server (${guild.id})`);
 			}
-			await client.query('COMMIT');
+			return await client.query('COMMIT');
 		} catch (ex) {
-			guild.members
+			return guild.members
 				.fetch(guild.ownerId)
 				.then((ownerId) =>
 					ownerId.send(
 						`An error occurred when WatchLyst tried to join ${guild.name}, please kick WatchLyst from the server and [reinvite it](${inviteLink}). If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					)
 				);
-			return console.log(ex);
 		} finally {
 			client.release();
 		}

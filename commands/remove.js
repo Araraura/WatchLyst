@@ -26,6 +26,7 @@ module.exports = {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
+				return client.release();
 			});
 		} else {
 			try {
@@ -56,7 +57,7 @@ module.exports = {
 						`${Emoji.Error} Error: Something went wrong when removing a user. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
 				message.channel.send({ embeds: [exceptionOccurred] });
-				await client.query('ROLLBACK');
+				return await client.query('ROLLBACK');
 			} finally {
 				client.release();
 			}

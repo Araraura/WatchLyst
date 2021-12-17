@@ -63,14 +63,13 @@ module.exports = {
 				}
 			}
 		} catch (ex) {
-			guildMember.guild.members
+			return guildMember.guild.members
 				.fetch(guildMember.guild.ownerId)
 				.then((ownerId) =>
 					ownerId.send(
 						`${Emoji.Error} An error occurred when trying to notify of a listed user. If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					)
 				);
-			return console.log(ex);
 		} finally {
 			client.release();
 		}

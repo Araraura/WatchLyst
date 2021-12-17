@@ -26,6 +26,7 @@ module.exports = {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
+				return client.release();
 			});
 		} else {
 			try {
@@ -80,7 +81,7 @@ module.exports = {
 							const presentUserMessage = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already in the server.`);
 							return await message.guild.members.fetch(args[0]).then(() => message.channel.send({ embeds: [presentUserMessage] }));
 						} catch (err) {
-							// Checks if the User is already banned in the server
+							// Checks if the user is already banned in the server
 							try {
 								await message.guild.bans.fetch(args[0]);
 								const userBanned = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
@@ -110,7 +111,7 @@ module.exports = {
 						`${Emoji.Error} Error: Something went wrong when adding a user. Contact ${author} or open a new issue at ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
 				message.channel.send({ embeds: [exceptionOccurred] });
-				await client.query('ROLLBACK');
+				return await client.query('ROLLBACK');
 			} finally {
 				client.release();
 			}

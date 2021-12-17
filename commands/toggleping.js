@@ -51,7 +51,7 @@ module.exports = {
 						`${Emoji.Error} Error: Something went wrong when toggling a role ping. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
 				message.channel.send({ embeds: [exceptionOccurred] });
-				await client.query('ROLLBACK');
+				return await client.query('ROLLBACK');
 			} finally {
 				client.release();
 			}

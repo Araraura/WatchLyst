@@ -31,27 +31,28 @@ module.exports = {
 			port: port,
 			database: database
 		});
-		const client = await pool.connect();
 		if (message.channel.type === 'DM') {
 			helpCommand.setDescription(`[Add me to your server!](${inviteLink}) • ${Emoji.GitHub} [GitHub Repository](${PackageJson.homepage})`);
 			return message.channel.send({ embeds: [helpCommand] });
 		}
+		const client = await pool.connect();
 		const permissionCheck = await client.query(`SELECT role_id FROM public.servers WHERE server_id = '${message.guild.id}'`);
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) && !message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
-			message.channel.send({ embeds: [noPermission] }).then((msg) => {
+			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
+				return client.release;
 			});
 		} else {
 			try {
-				message.channel.send({ embeds: [helpCommand] });
+				return message.channel.send({ embeds: [helpCommand] });
 			} catch (ex) {
 				const exceptionOccurred = new MessageEmbed()
 					.setColor(botRed)
 					.setDescription(
 						`${Emoji.Error} Error: Something went wrong when trying to display WatchLyst commands. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
-				message.channel.send({ embeds: [exceptionOccurred] });
+				return message.channel.send({ embeds: [exceptionOccurred] });
 			} finally {
 				client.release();
 			}
