@@ -9,7 +9,7 @@ module.exports = {
 	name: 'toggleping',
 	description: "Toggle whether or not the server's assigned role will be pinged once a listed user joins the server",
 	guildOnly: true,
-	aliases: ['ping, pingtoggle, toggle_ping, ping_toggle'],
+	aliases: ['ping', 'pingtoggle', 'toggle_ping', 'ping_toggle'],
 	async execute(message) {
 		const pool = new Pool({
 			user: user,
@@ -33,14 +33,14 @@ module.exports = {
 					await client.query('BEGIN');
 					await client.query(`UPDATE public.servers SET toggle_ping = TRUE WHERE server_id = '${message.guild.id}'`);
 					await client.query('COMMIT');
-					const toggleResult = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Info} WatchLyst will now ping the assigned role when a listed user joins.`);
+					const toggleResult = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Info} WatchLyst will ping the assigned role when a listed user joins.`);
 					message.channel.send({ embeds: [toggleResult] });
 					return console.log(`Toggled role ping to (TRUE) for server ${message.guild.id}`);
 				} else if (results.rows[0].toggle_ping) {
 					await client.query('BEGIN');
 					await client.query(`UPDATE public.servers SET toggle_ping = FALSE WHERE server_id = '${message.guild.id}'`);
 					await client.query('COMMIT');
-					const toggleResult = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Info} WatchLyst will no longer ping the assigned role.`);
+					const toggleResult = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Info} WatchLyst will no longer ping the assigned role when a user joins.`);
 					message.channel.send({ embeds: [toggleResult] });
 					return console.log(`Toggled role ping to (FALSE) for server (${message.guild.id})`);
 				}
