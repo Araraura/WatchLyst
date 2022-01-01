@@ -25,7 +25,7 @@ client.once('ready', () => {
 });
 
 client.on('guildCreate', (guild) => {
-	client.commands.get('newServer').execute(guild);
+	client.commands.get('newserver').execute(guild);
 });
 
 client.on('guildMemberAdd', (guildMember) => {

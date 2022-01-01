@@ -5,7 +5,7 @@ const { Pool } = require('pg');
 const PackageJson = require('../package.json');
 
 module.exports = {
-	name: 'newServer',
+	name: 'newserver',
 	description: 'Adds a new server ID to the database the first time WatchLyst joins it',
 	guildOnly: true,
 	async execute(guild) {
