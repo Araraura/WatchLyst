@@ -47,7 +47,7 @@ module.exports = {
 									value: `${row.reason} - Listed at ${format(row.date_added, 'MMM dd yyyy')}`
 								})
 							);
-							listCommand.setFooter(`Page 1 / ${Math.ceil(results.rowCount / 7)}`);
+							listCommand.setFooter({ text: `Page 1 / ${Math.ceil(results.rowCount / 7)}` });
 							return message.channel.send({ embeds: [listCommand] });
 						} else if (results.rowCount <= 7) {
 							results.rows.forEach((row) =>
@@ -72,7 +72,7 @@ module.exports = {
 								value: `${row.reason} - Listed at ${format(row.date_added, 'MMM dd yyyy')}`
 							})
 						);
-						listCommand.setFooter(`Page ${Math.ceil(results.rowCount / 7)} / ${Math.ceil(results.rowCount / 7)}`);
+						listCommand.setFooter({ text: `Page ${Math.ceil(results.rowCount / 7)} / ${Math.ceil(results.rowCount / 7)}` });
 						return message.channel.send({ embeds: [listCommand] });
 					} else if (results.rowCount <= 7) {
 						results.rows.forEach((row) =>
@@ -96,7 +96,7 @@ module.exports = {
 									value: `${row.reason} - Listed at ${format(row.date_added, 'MMM dd yyyy')}`
 								})
 							);
-							listCommand.setFooter(`Page ${parseInt(args[0])} / ${Math.ceil(results.rowCount / 7)}`);
+							listCommand.setFooter({ text: `Page ${parseInt(args[0])} / ${Math.ceil(results.rowCount / 7)}` });
 							return message.channel.send({ embeds: [listCommand] });
 						} else if (results.rowCount <= 7) {
 							results.rows.forEach((row) =>

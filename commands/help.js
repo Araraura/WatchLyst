@@ -7,7 +7,7 @@ const PackageJson = require('../package.json');
 
 const helpCommand = new MessageEmbed()
 	.setColor(botYellow)
-	.setAuthor(`Made by ${author}`, `${authorAvatar}`)
+	.setAuthor({ name: 'Made by Araraura', iconURL: authorAvatar })
 	.setTitle('WatchLyst - List of commands')
 	.setDescription(`${Emoji.GitHub} [GitHub Repository](${PackageJson.homepage})`)
 	.setThumbnail(botAvatar)
@@ -17,7 +17,7 @@ const helpCommand = new MessageEmbed()
 		{ name: "Displays a list of users in the server's WatchLyst", value: `\`${prefix} list <Page Number>\`` },
 		{ name: 'List of server setup commands (Admin Only)', value: `\`${prefix} setup\`` }
 	)
-	.setFooter(`Version ${PackageJson.version}`);
+	.setFooter({ text: `Version ${PackageJson.version}` });
 
 module.exports = {
 	name: 'help',
