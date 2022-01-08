@@ -5,7 +5,8 @@
 	"homepage": "https://github.com/Araraura/WatchLyst",
 	"main": "main.js",
 	"scripts": {
-		"start": "node main.js"
+		"start": "node main.js",
+		"dev": "nodemon main.js"
 	},
 	"author": "Araraura",
 	"license": "AGPL-3.0-or-later",
