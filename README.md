@@ -1,10 +1,10 @@
 # WatchLyst
 
-<p style="text-align:center">
+<p align="center">
   <img src="https://i.imgur.com/WUXKZzZ.png" alt="WatchLyst Logo"/>
+  <p align="center">Thanks <a src="https://twitter.com/MarcelSteak2">@MarcelSteak2</a> for the logo!</p>
+  <hr />
 </p>
-<p style="text-align:center">Thanks <a src="https://twitter.com/MarcelSteak2">@MarcelSteak2</a> for the logo!</p>
-
 
 A Discord bot which allows server staff to create a list of troublesome users, and will alert when one of the users join the server.
 
