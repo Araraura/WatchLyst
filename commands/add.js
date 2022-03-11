@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botGreen, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const PackageJson = require('../package.json');
@@ -50,11 +50,11 @@ module.exports = {
 								const userBanned = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
 								return message.channel.send({ embeds: [userBanned] });
 							} catch (err) {
-								// Successful insert
+								// Successful insert (No reason)
 								await client.query(
 									`INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
 										message.guild.id
-									}', current_date, 'No reason provided', '${message.author.tag.replace(/'/g, "''")}')`
+									}', current_date, 'No reason provided.', '${message.author.tag.replace(/'/g, "''")}')`
 								);
 							}
 						}
@@ -87,7 +87,7 @@ module.exports = {
 								const userBanned = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
 								return message.channel.send({ embeds: [userBanned] });
 							} catch (err) {
-								// Successful insert
+								// Successful insert (With reason)
 								await client.query(
 									`INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
 										message.guild.id
@@ -101,7 +101,15 @@ module.exports = {
 					}
 				}
 				await client.query('COMMIT');
-				const addCommand = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Ok} <@${args[0]}> has been added to the server's WatchLyst.`);
+				if (args[1] == undefined) {
+					args[1] = 'No reason provided.';
+				} else {
+					args[1] = args.slice(1).join(' ');
+				}
+				const addCommand = new MessageEmbed()
+					.setColor(botGreen)
+					.setDescription(`${Emoji.Ok} <@${args[0]}> has been added to the server's WatchLyst.`)
+					.addField('Reason for adding:', `${args[1]}`);
 				message.channel.send({ embeds: [addCommand] });
 				return console.log(`Added user (${args[0]}) to server (${message.guild.id})`);
 			} catch (ex) {
