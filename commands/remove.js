@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botGreen, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const PackageJson = require('../package.json');
@@ -46,7 +46,7 @@ module.exports = {
 						return message.channel.send({ embeds: [userExists] });
 					}
 					await client.query('COMMIT');
-					const removeCommand = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Ok} <@${args[0]}> has been removed from the server's WatchLyst.`);
+					const removeCommand = new MessageEmbed().setColor(botGreen).setDescription(`${Emoji.Ok} <@${args[0]}> has been removed from the server's WatchLyst.`);
 					message.channel.send({ embeds: [removeCommand] });
 					return console.log(`Removed user (${args[0]}) from server (${message.guild.id})`);
 				}

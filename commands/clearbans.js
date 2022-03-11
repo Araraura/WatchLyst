@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { author, botYellow, botRed } = require('../watchlyst-config.json');
+const { author, botGreen, botYellow, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const PackageJson = require('../package.json');
@@ -52,7 +52,7 @@ module.exports = {
 						return message.channel.send({ embeds: [noBansCleared] });
 					} else {
 						const bansGotCleared = new MessageEmbed()
-							.setColor(botYellow)
+							.setColor(botGreen)
 							.setDescription(`${Emoji.Ok} ${clearedNum} banned user${clearedNum === 1 ? '' : 's'} have been removed from the server's WatchLyst.`);
 						message.channel.send({ embeds: [bansGotCleared] });
 						return console.log(`Cleared ${clearedNum} banned user(s) from server (${message.guild.id})`);

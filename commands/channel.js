@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botGreen, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const PackageJson = require('../package.json');
@@ -38,7 +38,7 @@ module.exports = {
 					await client.query('BEGIN');
 					await client.query(`UPDATE public.servers SET channel_id = '${args[0]}' WHERE server_id = '${message.guild.id}'`);
 					await client.query('COMMIT');
-					const channelCommand = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Ok} WatchLyst will now notify of listed users in <#${args[0]}>.`);
+					const channelCommand = new MessageEmbed().setColor(botGreen).setDescription(`${Emoji.Ok} WatchLyst will now notify of listed users in <#${args[0]}>.`);
 					message.channel.send({ embeds: [channelCommand] });
 					return console.log(`Updated channel (${args[0]}) for server (${message.guild.id})`);
 				}
