@@ -1,3 +1,16 @@
+### 1.2.0 - March 11 2022
+- New logo (Thanks [@MarcelSteak2](https://twitter.com/MarcelSteak2)!)
+- Upgraded to discord.js v13
+- Code rewrite / cleanup
+- Added `!w check`, which displays details about a specific user in the server's WatchLyst
+- Added `!w clearbans`, which removes all of the banned users in the server's WatchLyst
+- Add command now displays the provided reason
+- Changed some colors around to match the new logo
+- Fixed a bug where the aliases for `!w toggleping` was not functioning
+- Fixed a bug where command parameters would not work if seperated by newlines or extra spaces
+- Add command no longer replaces an apostophe (') with a tilted apostophe (’)
+- Improved error messages
+
 ### 1.1.1 - January 1 2021
 - Fixed a bug where WatchLyst would check for a bot-breaking character only once instead of all instances in an entry's reason.
 - When a user encounters an issue, WatchLyst now directs them to the GitHub.
