@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botGreen, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const PackageJson = require('../package.json');
@@ -26,8 +26,9 @@ module.exports = {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
+				return client.release();
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
+		} else {
 			try {
 				// Check if the User ID isn't 18 characters long, or if it contains non-digit characters
 				if (args[0].length !== 18 || /\D/.test(args[0])) {
@@ -49,11 +50,11 @@ module.exports = {
 								const userBanned = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
 								return message.channel.send({ embeds: [userBanned] });
 							} catch (err) {
-								// Successful insert
+								// Successful insert (No reason)
 								await client.query(
 									`INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
 										message.guild.id
-									}', current_date, 'No reason provided', '${message.author.tag.replace(/'/g, '’')}')`
+									}', current_date, 'No reason provided.', '${message.author.tag.replace(/'/g, "''")}')`
 								);
 							}
 						}
@@ -64,7 +65,7 @@ module.exports = {
 					// Checks if the User to the list if the User ID is 18 characters long and a reason for adding the user was provided
 				} else if (args[0].length === 18 && args[1] !== undefined) {
 					const argsJoin = args.slice(1).join(' ');
-					const reason = argsJoin.replace(/'/g, '’');
+					const reason = argsJoin.replace(/'/g, "''");
 					// Gives an error if the reason provided is longer than 512 characters
 					if (reason.length > 512) {
 						const reasonTooLong = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: Reason for adding cannot be longer than 512 characters.`);
@@ -80,17 +81,17 @@ module.exports = {
 							const presentUserMessage = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already in the server.`);
 							return await message.guild.members.fetch(args[0]).then(() => message.channel.send({ embeds: [presentUserMessage] }));
 						} catch (err) {
-							// Checks if the User is already banned in the server
+							// Checks if the user is already banned in the server
 							try {
 								await message.guild.bans.fetch(args[0]);
 								const userBanned = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> is already banned in this server.`);
 								return message.channel.send({ embeds: [userBanned] });
 							} catch (err) {
-								// Successful insert
+								// Successful insert (With reason)
 								await client.query(
 									`INSERT INTO public.user_list (user_id, server_id, date_added, reason, added_by) VALUES ('${args[0]}', '${
 										message.guild.id
-									}', current_date, '${reason}', '${message.author.tag.replace(/'/g, '’')}')`
+									}', current_date, '${reason}', '${message.author.tag.replace(/'/g, "''")}')`
 								);
 							}
 						}
@@ -100,7 +101,15 @@ module.exports = {
 					}
 				}
 				await client.query('COMMIT');
-				const addCommand = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Ok} <@${args[0]}> has been added to the server's WatchLyst.`);
+				if (args[1] == undefined) {
+					args[1] = 'No reason provided.';
+				} else {
+					args[1] = args.slice(1).join(' ');
+				}
+				const addCommand = new MessageEmbed()
+					.setColor(botGreen)
+					.setDescription(`${Emoji.Ok} <@${args[0]}> has been added to the server's WatchLyst.`)
+					.addField('Reason for adding:', `${args[1]}`);
 				message.channel.send({ embeds: [addCommand] });
 				return console.log(`Added user (${args[0]}) to server (${message.guild.id})`);
 			} catch (ex) {
@@ -110,7 +119,7 @@ module.exports = {
 						`${Emoji.Error} Error: Something went wrong when adding a user. Contact ${author} or open a new issue at ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
 				message.channel.send({ embeds: [exceptionOccurred] });
-				await client.query('ROLLBACK');
+				return await client.query('ROLLBACK');
 			} finally {
 				client.release();
 			}

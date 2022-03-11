@@ -7,7 +7,7 @@ const PackageJson = require('../package.json');
 
 const helpCommand = new MessageEmbed()
 	.setColor(botYellow)
-	.setAuthor(`Made by ${author}`, `${authorAvatar}`)
+	.setAuthor({ name: 'Made by Araraura', iconURL: authorAvatar })
 	.setTitle('WatchLyst - List of commands')
 	.setDescription(`${Emoji.GitHub} [GitHub Repository](${PackageJson.homepage})`)
 	.setThumbnail(botAvatar)
@@ -17,7 +17,7 @@ const helpCommand = new MessageEmbed()
 		{ name: "Displays a list of users in the server's WatchLyst", value: `\`${prefix} list <Page Number>\`` },
 		{ name: 'List of server setup commands (Admin Only)', value: `\`${prefix} setup\`` }
 	)
-	.setFooter(`Version ${PackageJson.version}`);
+	.setFooter({ text: `Version ${PackageJson.version}` });
 
 module.exports = {
 	name: 'help',
@@ -31,20 +31,31 @@ module.exports = {
 			port: port,
 			database: database
 		});
-		const client = await pool.connect();
 		if (message.channel.type === 'DM') {
 			helpCommand.setDescription(`[Add me to your server!](${inviteLink}) • ${Emoji.GitHub} [GitHub Repository](${PackageJson.homepage})`);
 			return message.channel.send({ embeds: [helpCommand] });
 		}
+		const client = await pool.connect();
 		const permissionCheck = await client.query(`SELECT role_id FROM public.servers WHERE server_id = '${message.guild.id}'`);
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) && !message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
+				return client.release;
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
-			return message.channel.send({ embeds: [helpCommand] });
+		} else {
+			try {
+				return message.channel.send({ embeds: [helpCommand] });
+			} catch (ex) {
+				const exceptionOccurred = new MessageEmbed()
+					.setColor(botRed)
+					.setDescription(
+						`${Emoji.Error} Error: Something went wrong when trying to display WatchLyst commands. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
+					);
+				return message.channel.send({ embeds: [exceptionOccurred] });
+			} finally {
+				client.release();
+			}
 		}
-		client.release();
 	}
 };

@@ -38,14 +38,14 @@ module.exports = {
 						.setDescription(`${userNotify.rows[0].reason} | Listed at ${format(userNotify.rows[0].date_added, 'MMM dd yyyy')} | Listed by ${userNotify.rows[0].added_by}`);
 					// If a server has an assigned role and the channel it's sending in isn't deleted and toggle ping is on, pings it
 					if (notifyServer.rows[0].role_id !== null && guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id) !== undefined && notifyServer.rows[0].toggle_ping) {
-						guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id).send(`WatchLyst notification - <@&${notifyServer.rows[0].role_id}>`);
+						guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id).send({ content: `WatchLyst notification - <@&${notifyServer.rows[0].role_id}>` });
 					}
 					// If the assigned channel has been deleted
 					if (guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id) === undefined) {
-						notify.setFooter(
-							`The channel assigned to WatchLyst has been deleted. Please assign a new channel using \`${prefix} channel <Channel ID>\``,
-							'https://cdn.discordapp.com/emojis/779714125282148362.png'
-						);
+						notify.setFooter({
+							text: `The channel assigned to WatchLyst has been deleted. Please assign a new channel using \`${prefix} channel <Channel ID>\``,
+							iconURL: 'https://cdn.discordapp.com/emojis/779714125282148362.png'
+						});
 						return guildMember.guild.members.fetch(guildMember.guild.ownerId).then((ownerId) => ownerId.send({ embeds: [notify] }));
 					}
 					return guildMember.guild.channels.cache.get(notifyServer.rows[0].channel_id).send({ embeds: [notify] });
@@ -55,22 +55,19 @@ module.exports = {
 						.setColor(botYellow)
 						.setTitle(`Warning - ID ${userNotify.rows[0].user_id} has joined the server.`)
 						.setDescription(`${userNotify.rows[0].reason} | Listed at ${format(userNotify.rows[0].date_added, 'MMM dd yyyy')} | Listed by ${userNotify.rows[0].added_by}`)
-						.setFooter(
-							`Instead of receiving these warnings in direct messages, you can receive them in an assigned channel in your server by using \`${prefix} channel <Channel ID>\`.`,
-							'https://cdn.discordapp.com/emojis/779714125282148362.png'
-						);
+						.setFooter({
+							text: `Instead of receiving these warnings in direct messages, you can receive them in an assigned channel in your server by using \`${prefix} channel <Channel ID>\`.`,
+							iconURL: 'https://cdn.discordapp.com/emojis/779714125282148362.png'
+						});
 					return guildMember.guild.members.fetch(guildMember.guild.ownerId).then((ownerId) => ownerId.send({ embeds: [notify] }));
 				}
 			}
 		} catch (ex) {
-			guildMember.guild.members
-				.fetch(guildMember.guild.ownerId)
-				.then((ownerId) =>
-					ownerId.send(
-						`${Emoji.Error} An error occurred when trying to notify of a listed user. If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
-					)
-				);
-			return console.log(ex);
+			return guildMember.guild.members.fetch(guildMember.guild.ownerId).then((ownerId) =>
+				ownerId.send({
+					content: `${Emoji.Error} An error occurred when trying to notify of a listed user. If the error persist, contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
+				})
+			);
 		} finally {
 			client.release();
 		}

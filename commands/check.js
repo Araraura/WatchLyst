@@ -1,16 +1,17 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { prefix, author, botGreen, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
+const { format } = require('date-fns');
 const PackageJson = require('../package.json');
 
 module.exports = {
-	name: 'remove',
-	description: "Removes a user from the server's WatchLyst",
+	name: 'check',
+	description: "Shows information for a given user in the server's WatchLyst",
 	args: true,
 	guildOnly: true,
-	aliases: ['delete', 'r'],
+	aliases: ['display', 'c'],
 	async execute(message, args) {
 		const pool = new Pool({
 			user: user,
@@ -36,28 +37,28 @@ module.exports = {
 					return message.channel.send({ embeds: [invalidID] });
 					// Checks if the User ID is 18 characters long
 				} else if (args[0].length === 18) {
-					await client.query('BEGIN');
-					const results = await client.query(`SELECT user_id FROM public.user_list WHERE server_id = '${message.guild.id}' AND user_id = '${args[0]}'`);
-					// If the User is in the list, removes it
+					const results = await client.query(`SELECT user_id, added_by, reason, date_added FROM public.user_list WHERE server_id = '${message.guild.id}' AND user_id = '${args[0]}'`);
+					// If the User is in the list, displays it
 					if (results.rows[0] !== undefined) {
-						await client.query(`DELETE FROM public.user_list WHERE server_id = '${message.guild.id}' AND user_id = '${args[0]}'`);
+						const displayUser = new MessageEmbed()
+							.setColor(botYellow)
+							.addField(
+								`User ID: ${results.rows[0].user_id} | Added by: ${results.rows[0].added_by}`,
+								`${results.rows[0].reason} - Listed at ${format(results.rows[0].date_added, 'MMM dd yyyy')}`
+							);
+						return message.channel.send({ embeds: [displayUser] });
 					} else if (results.rows[0] === undefined) {
 						const userExists = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: <@${args[0]}> doesn't exist in the server's WatchLyst.`);
 						return message.channel.send({ embeds: [userExists] });
 					}
-					await client.query('COMMIT');
-					const removeCommand = new MessageEmbed().setColor(botGreen).setDescription(`${Emoji.Ok} <@${args[0]}> has been removed from the server's WatchLyst.`);
-					message.channel.send({ embeds: [removeCommand] });
-					return console.log(`Removed user (${args[0]}) from server (${message.guild.id})`);
 				}
 			} catch (ex) {
 				const exceptionOccurred = new MessageEmbed()
 					.setColor(botRed)
 					.setDescription(
-						`${Emoji.Error} Error: Something went wrong when removing a user. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
+						`${Emoji.Error} Error: Something went wrong when trying to check for a user. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
-				message.channel.send({ embeds: [exceptionOccurred] });
-				return await client.query('ROLLBACK');
+				return message.channel.send({ embeds: [exceptionOccurred] });
 			} finally {
 				client.release();
 			}

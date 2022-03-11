@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js');
 const { user, password, host, port, database } = require('../database-info');
-const { prefix, author, botYellow, botRed } = require('../watchlyst-config.json');
+const { prefix, author, botGreen, botRed } = require('../watchlyst-config.json');
 const { Emoji } = require('../emojis.json');
 const { Pool } = require('pg');
 const PackageJson = require('../package.json');
@@ -24,7 +24,7 @@ module.exports = {
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+		} else {
 			const client = await pool.connect();
 			try {
 				// Check if the Channel ID isn't 18 characters long, or if it contains non-digit characters
@@ -32,13 +32,13 @@ module.exports = {
 					const invalidID = new MessageEmbed()
 						.setColor(botRed)
 						.setDescription(`${Emoji.Error} Error: Channel IDs must consist of 18 digits (Type \`${prefix} setup\` for list of setup commands).`);
-					return message.channel.send(invalidID);
+					return message.channel.send({ embeds: [invalidID] });
 					// Checks if the Channel ID is 18 characters long and updates
 				} else if (args[0].length === 18) {
 					await client.query('BEGIN');
 					await client.query(`UPDATE public.servers SET channel_id = '${args[0]}' WHERE server_id = '${message.guild.id}'`);
 					await client.query('COMMIT');
-					const channelCommand = new MessageEmbed().setColor(botYellow).setDescription(`${Emoji.Ok} WatchLyst will now notify of listed users in <#${args[0]}>.`);
+					const channelCommand = new MessageEmbed().setColor(botGreen).setDescription(`${Emoji.Ok} WatchLyst will now notify of listed users in <#${args[0]}>.`);
 					message.channel.send({ embeds: [channelCommand] });
 					return console.log(`Updated channel (${args[0]}) for server (${message.guild.id})`);
 				}
@@ -49,7 +49,7 @@ module.exports = {
 						`${Emoji.Error} Error: Something went wrong when setting up a channel. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
 				message.channel.send({ embeds: [exceptionOccurred] });
-				await client.query('ROLLBACK');
+				return await client.query('ROLLBACK');
 			} finally {
 				client.release();
 			}

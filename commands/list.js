@@ -26,8 +26,9 @@ module.exports = {
 			const noPermission = new MessageEmbed().setColor(botRed).setDescription(`${Emoji.Error} Error: You don't have permission to use this.`);
 			return message.channel.send({ embeds: [noPermission] }).then((msg) => {
 				setTimeout(() => msg.delete(), 10000);
+				return client.release();
 			});
-		} else if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || message.member.roles.cache.has(permissionCheck.rows[0].role_id)) {
+		} else {
 			try {
 				const results = await client.query(`SELECT user_id, date_added, reason, added_by FROM public.user_list WHERE server_id = '${message.guild.id}'`);
 				// User has not provided a page number
@@ -46,7 +47,7 @@ module.exports = {
 									value: `${row.reason} - Listed at ${format(row.date_added, 'MMM dd yyyy')}`
 								})
 							);
-							listCommand.setFooter(`Page 1 / ${Math.ceil(results.rowCount / 7)}`);
+							listCommand.setFooter({ text: `Page 1 / ${Math.ceil(results.rowCount / 7)}` });
 							return message.channel.send({ embeds: [listCommand] });
 						} else if (results.rowCount <= 7) {
 							results.rows.forEach((row) =>
@@ -71,7 +72,7 @@ module.exports = {
 								value: `${row.reason} - Listed at ${format(row.date_added, 'MMM dd yyyy')}`
 							})
 						);
-						listCommand.setFooter(`Page ${Math.ceil(results.rowCount / 7)} / ${Math.ceil(results.rowCount / 7)}`);
+						listCommand.setFooter({ text: `Page ${Math.ceil(results.rowCount / 7)} / ${Math.ceil(results.rowCount / 7)}` });
 						return message.channel.send({ embeds: [listCommand] });
 					} else if (results.rowCount <= 7) {
 						results.rows.forEach((row) =>
@@ -95,7 +96,7 @@ module.exports = {
 									value: `${row.reason} - Listed at ${format(row.date_added, 'MMM dd yyyy')}`
 								})
 							);
-							listCommand.setFooter(`Page ${parseInt(args[0])} / ${Math.ceil(results.rowCount / 7)}`);
+							listCommand.setFooter({ text: `Page ${parseInt(args[0])} / ${Math.ceil(results.rowCount / 7)}` });
 							return message.channel.send({ embeds: [listCommand] });
 						} else if (results.rowCount <= 7) {
 							results.rows.forEach((row) =>
@@ -111,7 +112,7 @@ module.exports = {
 					.setDescription(
 						`${Emoji.Error} Error: Something went wrong when trying to display a list. Contact ${author} or open a new issue at the ${Emoji.GitHub} [GitHub](${PackageJson.bugs.url}). \n\`${ex}\``
 					);
-				message.channel.send({ embeds: [exceptionOccurred] });
+				return message.channel.send({ embeds: [exceptionOccurred] });
 			} finally {
 				client.release();
 			}
