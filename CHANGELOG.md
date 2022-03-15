@@ -3,7 +3,7 @@
 - Upgraded to discord.js v13
 - Code rewrite / cleanup
 - Added `!w check`, which displays details about a specific user in the server's WatchLyst
-- Added `!w clearbans`, which removes all of the banned users in the server's WatchLyst
+- Added `!w clearbans`, which removes all of the banned users from the server's WatchLyst
 - Add command now displays the provided reason
 - Changed some colors around to match the new logo
 - Fixed a bug where the aliases for `!w toggleping` was not functioning
