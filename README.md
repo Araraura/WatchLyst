@@ -8,30 +8,38 @@
 
 A Discord bot which allows server staff to create a list of troublesome users, and will alert when one of the users join the server.
 
-![GIF Example](https://i.imgur.com/omb6BgP.gif "GIF Example")
+![GIF Example](https://i.imgur.com/DrFgl5z.gif "GIF Example")
 
-### [Invite WatchLyst to your server](https://discord.com/api/oauth2/authorize?client_id=765240772781932555&permissions=84996&scope=bot)
+### [Invite WatchLyst to your server](https://discord.com/api/oauth2/authorize?client_id=765240772781932555&permissions=2052&scope=bot%20applications.commands)
 
 # Usage
 
-### Staff
+### Commands
 
-- `!w add <User ID> <Reason (Optional, max 512 characters)>` Adds a user to the WatchLyst
+- `/add [User ID*] [Reason]` Add a user to the server's WatchLyst
 
-- `!w remove <User ID>` Removes a user from the WatchLyst
+- `/remove [User ID*]` Remove a user from the server's WatchLyst
 
-- `!w list <Page>` Displays a list of users in the server's WatchLyst
+- `/update [User ID*] [Reason]` Update a user's information in the server's WatchLyst
 
-- `!w check <User ID>` Displays information about a specific user in the server's WatchLyst
+- `/list [Page]` Display a list of users in the server's WatchLyst
 
+- `/check [User ID*]` Show information about a user in the server's WatchLyst
 
-### Admins only
-- `!w setup` Lists server setup commands
+- `/help` Display a list of WatchLyst commands (Also usable in DMs)
 
-- `!w channel <Channel ID>` Specify the channel where WatchLyst will notify when a listed user joins the server (Default: DMs the server owner)
+- `/config [Channel ID] [Role ID] [Toggle Pings]` (Admin only) Configurate a channel that WatchLyst will send alerts to, a role that will have access to the WatchLyst commands, and whether or not to ping the role when a user joins the server. Leave all arguments blank to display or reset the configuration.
 
-- `!w role <Role ID>` Specify a role that will get access to WatchLyst commands (Excluding admin commands)
+### Events
 
-- `!w toggleping` Toggle whether or not the assigned role will be pinged once a listed member joins the server (Default: Off)
+- **When WatchLyst is added to a new server** -> WatchLyst will send the owner a message and create new configuration for the server.
 
-- `!w clearbans` Removes all banned users from the server's WatchLyst
+- **When WatchLyst is removed from a server** -> WatchLyst will remove the server's configuration.
+
+- **When a listed user joins or leaves** -> WatchLyst will send an alert.
+
+- **When a listed user is banned** -> WatchLyst will send an alert and unlist the user.
+
+- **When an assigned channel is deleted** -> The channel will be removed from the server's WatchLyst configuration.
+
+- **When an assigned role is deleted** -> The role will be removed from the server's WatchLyst configuration.
