@@ -26,7 +26,7 @@ export class List {
       return void await interaction.reply({ ephemeral: true, embeds: [errorEmbed("You don't have permission to use this.")] });
     }
 
-    const usersQuery = await UserList.findAll({ where: { server_id: interaction.guild?.id } });
+    const usersQuery = await UserList.findAll({ where: { server_id: interaction.guild?.id }, order: [["id", "DESC"]] });
     if (!usersQuery.length) {
       return void await interaction.reply({ ephemeral: true, embeds: [errorEmbed("There are no listed users in this server's WatchLyst.")] });
     }
@@ -42,7 +42,7 @@ export class List {
 
   @ButtonComponent({ id: "nextPage" })
   async nextPage(interaction: ButtonInteraction): Promise<void> {
-    const usersQuery = await UserList.findAll({ where: { server_id: interaction.guild?.id } });
+    const usersQuery = await UserList.findAll({ where: { server_id: interaction.guild?.id }, order: [["id", "DESC"]] });
     this.updatePage(interaction, this.getPage(interaction) + 1);
     const currPage = this.getPage(interaction);
     const isOnLastPage = Math.ceil(usersQuery.length / 7) === currPage;
@@ -54,7 +54,7 @@ export class List {
 
   @ButtonComponent({ id: "previousPage" })
   async previousPage(interaction: ButtonInteraction): Promise<void> {
-    const usersQuery = await UserList.findAll({ where: { server_id: interaction.guild?.id } });
+    const usersQuery = await UserList.findAll({ where: { server_id: interaction.guild?.id }, order: [["id", "DESC"]] });
     this.updatePage(interaction, this.getPage(interaction) - 1);
     const currPage = this.getPage(interaction);
     interaction.update({
