@@ -8,7 +8,7 @@
 
 A Discord bot which allows server staff to create a list of troublesome users, and will alert when one of the users join the server.
 
-![GIF Example](https://i.imgur.com/omb6BgP.gif "GIF Example")
+![GIF Example](https://i.imgur.com/DrFgl5z.gif "GIF Example")
 
 ### [Invite WatchLyst to your server](https://discord.com/api/oauth2/authorize?client_id=765240772781932555&permissions=2052&scope=bot%20applications.commands)
 
