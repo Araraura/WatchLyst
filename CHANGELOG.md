@@ -1,3 +1,7 @@
+### 2.0.1 = February 13 2023
+- Fixed a bug where the bot would crash when it leaves a server
+- Lists now display the newest entries first
+
 ### 2.0.0 - February 12 2023
 - Completely rewrote the bot using TypeScript and [discordx](https://discordx.js.org/)
 - Updated to discord.js v14
