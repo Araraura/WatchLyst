@@ -1,8 +1,7 @@
-# Folders
-node_modules
-local
+# files
+.vscode
+.env
 
-# Files
-watchlyst-config.json
-database-info.js
-.eslintrc.json
+# folders
+build
+node_modules
