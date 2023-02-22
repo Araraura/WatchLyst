@@ -8,12 +8,10 @@ export const bot = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMembers,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.GuildMessageReactions,
-    IntentsBitField.Flags.MessageContent,
-    IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildBans,
+    IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.DirectMessages,
+    IntentsBitField.Flags.MessageContent,
   ],
   partials: [Partials.Channel],
 
