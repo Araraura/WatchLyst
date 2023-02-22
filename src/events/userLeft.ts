@@ -17,7 +17,7 @@ export class UserLeft {
       const listedUserLeftNofityOwner = listedUserLeftEmbed(leavingUser as GuildMember, userQuery)
         .setFooter({ text: "Tip: You can assign a channel for WatchLyst to send notifications like these by using `/config` in your server." });
       return void await guildOwner.send({ embeds: [listedUserLeftNofityOwner] })
-        .catch((error) => {
+        .catch((error) => { // Cannot send messages to this user
           if (error.code === 50007) return;
         });;
     }

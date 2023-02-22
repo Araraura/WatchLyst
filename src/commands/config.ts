@@ -48,7 +48,7 @@ export class Config {
     };
 
     if (channel && channel.type !== ChannelType.GuildText) {
-      return void await interaction.reply({ ephemeral: true, embeds: [errorEmbed("Only normal text channels are supported.")] });
+      return void await interaction.reply({ ephemeral: true, embeds: [errorEmbed("Only regular text channels are supported.")] });
     }
 
     await Servers.update(updates, { where: { server_id: interaction.guild?.id } })

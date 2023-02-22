@@ -14,7 +14,7 @@ export class ChannelDeleted {
 
     const guildOwner = await (deletedChannel as TextChannel).guild.fetchOwner();
     await guildOwner.send({ embeds: [assignedChannelDeletedEmbed(deletedChannel as TextChannel)] })
-      .catch((error) => {
+      .catch((error) => { // Cannot send messages to this user
         if (error.code === 50007) return;
       });
   }

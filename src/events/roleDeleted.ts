@@ -14,7 +14,7 @@ export class RoleDeleted {
 
     const guildOwner = await deletedRole.guild.fetchOwner();
     await guildOwner.send({ embeds: [assignedRoleDeletedEmbed(deletedRole)] })
-      .catch((error) => {
+      .catch((error) => { // Cannot send messages to this user
         if (error.code === 50007) return;
       });
   }

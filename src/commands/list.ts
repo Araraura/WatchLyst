@@ -84,7 +84,7 @@ const userListEmbed = async (usersQuery: UserList[], page: number, interaction: 
   for (const user of users) {
     const fetchedUserTag = (await interaction.client.users.fetch(user.user_id)
       .catch((error) => {
-        if (error.code === 10013) {
+        if (error.code === 10013) { // Unknown User
           return void UserList.destroy({ where: { user_id: user.user_id, server_id: interaction.guild?.id } });
         }
       }))?.tag ?? "Deleted User";
