@@ -10,13 +10,13 @@ export class NewServer {
   async newServer([guild]: ArgsOf<"guildCreate">) {
     const guildOwner = await guild.fetchOwner();
     await guildOwner.send({ embeds: [welcomeMessageEmbed(guild.name)] })
-      .catch((error) => {
+      .catch((error) => { // Cannot send messages to this user
         if (error.code === 50007) return;
       });
 
     await Servers.findOrCreate({ where: { server_id: guild.id } }).catch((error) =>
       guildOwner.send({ embeds: [errorMessageEmbed(error)] })
-        .catch((error) => {
+        .catch((error) => { // Cannot send messages to this user
           if (error.code === 50007) return;
         }));
   }
