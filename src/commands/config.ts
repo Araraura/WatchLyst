@@ -5,7 +5,7 @@ import Servers from "../database/models/Servers.js";
 
 @Discord()
 export class Config {
-  @Slash({ description: "Assign a channel & role for WatchLyst, and toggle pings", name: "config", dmPermission: false })
+  @Slash({ description: "View or assign a channel & role for WatchLyst, and toggle pings", name: "config", dmPermission: false })
   async config(
     @SlashOption({
       type: ApplicationCommandOptionType.Channel,
@@ -13,22 +13,22 @@ export class Config {
       description: "The channel where WatchLyst will send notifications (Text channels only)",
       required: false,
     })
-    channel: Channel,
+      channel: Channel,
     @SlashOption({
       type: ApplicationCommandOptionType.Role,
       name: "role",
       description: "The role that will have access to WatchLyst commands",
       required: false,
     })
-    role: Role,
+      role: Role,
     @SlashOption({
       type: ApplicationCommandOptionType.Boolean,
       name: "ping",
       description: "Toggle pinging the role when a listed user joins",
       required: false,
     })
-    ping: boolean,
-    interaction: CommandInteraction): Promise<void> {
+      ping: boolean,
+      interaction: CommandInteraction): Promise<void> {
     const isAdmin = (interaction.member?.permissions as PermissionsBitField).has(PermissionsBitField.Flags.Administrator);
     if (!isAdmin) {
       return void await interaction.reply({ ephemeral: true, embeds: [errorEmbed("Only server admins may use this command.")] });
@@ -36,15 +36,16 @@ export class Config {
 
     const serverQuery = await Servers.findOne({ where: { server_id: interaction.guild?.id } }) as Servers;
     if (!channel && !role && ping === undefined) {
+      const waitMillis = 15000;
       return void await interaction.reply({ ephemeral: true, embeds: [propertiesConfirmRemovalEmbed(serverQuery)], components: [removePropertiesButton()] })
         .then(() => setTimeout(async () =>
-          interaction.editReply({ components: [removePropertiesButtonDisabled()] }), 15000));
+          interaction.editReply({ components: [removePropertiesButtonDisabled()] }), waitMillis));
     }
 
     const updates: Record<string, unknown> = {
       ...(channel ? { channel_id: channel.id } : {}),
       ...(role !== undefined && { role_id: role?.id }),
-      ...(ping !== undefined && { toggle_ping: ping })
+      ...(ping !== undefined && { toggle_ping: ping }),
     };
 
     if (channel && channel.type !== ChannelType.GuildText) {
@@ -71,7 +72,7 @@ const propertiesUpdatedEmbed = (server: Servers) => new EmbedBuilder()
   .setFields(
     { name: "Channel", value: server?.channel_id != null ? `<#${server.channel_id}>` : "None", inline: true },
     { name: "Role", value: server?.role_id != null ? `<@&${server?.role_id}>` : "None", inline: true },
-    { name: "Ping role", value: server?.toggle_ping ? "Enabled" : "Disabled", inline: true }
+    { name: "Ping role", value: server?.toggle_ping ? "Enabled" : "Disabled", inline: true },
   );
 
 const propertiesRemovedEmbed = (userTag: string) => new EmbedBuilder()
@@ -84,7 +85,7 @@ const propertiesConfirmRemovalEmbed = (server: Servers) => new EmbedBuilder()
   .setFields(
     { name: "Channel", value: server?.channel_id != null ? `<#${server.channel_id}>` : "None", inline: true },
     { name: "Role", value: server?.role_id != null ? `<@&${server?.role_id}>` : "None", inline: true },
-    { name: "Ping role", value: server?.toggle_ping ? "Enabled" : "Disabled", inline: true }
+    { name: "Ping role", value: server?.toggle_ping ? "Enabled" : "Disabled", inline: true },
   )
   .setFooter({ text: "Would you like to remove the server's configuration?" });
 
