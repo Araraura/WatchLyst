@@ -8,8 +8,10 @@ import Servers from "../database/models/Servers.js";
 export class Help {
   @Slash({ description: "List of WatchLyst commands", name: "help" })
   async help(interaction: CommandInteraction): Promise<void> {
+    const botAvatar = interaction.client.user.displayAvatarURL({ extension: "png", size: 1024 });
+    const botAuthor = await interaction.client.users.fetch(watchlystConfig.authorId);
     if (interaction.channel?.type === ChannelType.DM) {
-      const helpDirectMessageEmbed = helpEmbed()
+      const helpDirectMessageEmbed = helpEmbed(botAvatar, botAuthor.tag, botAuthor.displayAvatarURL())
         .setDescription(`[Add me to your server!](${watchlystConfig.inviteLink}) • ${emojiList.github} [GitHub Repository](${PackageJson.homepage})`);
       return void await interaction.reply({ embeds: [helpDirectMessageEmbed] });
     }
@@ -21,23 +23,23 @@ export class Help {
       return void await interaction.reply({ ephemeral: true, embeds: [errorEmbed("You don't have permission to use this.")] });
     }
 
-    await interaction.reply({ embeds: [helpEmbed()] });
+    await interaction.reply({ embeds: [helpEmbed(botAvatar, botAuthor.tag, botAuthor.displayAvatarURL())] });
   }
 }
 
-const helpEmbed = () => new EmbedBuilder()
+const helpEmbed = (botAvatar: string, authorTag: string, authorAvatar: string) => new EmbedBuilder()
   .setColor(watchlystConfig.colorYellow as ColorResolvable)
-  .setAuthor({ name: `Made by ${watchlystConfig.authorTag}`, iconURL: watchlystConfig.authorAvatar })
+  .setAuthor({ name: `Made by ${authorTag}`, iconURL: authorAvatar })
   .setTitle("WatchLyst - List of Commands")
   .setDescription(`${emojiList.github} [GitHub Repository](${PackageJson.homepage})`)
-  .setThumbnail(watchlystConfig.botAvatar)
+  .setThumbnail(botAvatar)
   .setFields(
     { name: "Add a user to the server's WatchLyst", value: "`/add [User ID*] [Reason]`" },
     { name: "Remove a user from the server's WatchLyst", value: "`/remove [User ID*]`" },
     { name: "Update a user's information in the server's WatchLyst", value: "`/update [User ID*] [Reason]`" },
     { name: "Display a list of users in the server's WatchLyst", value: "`/list [Page]`" },
     { name: "Show information about a user in the server's WatchLyst", value: "`/check [User ID*]`" },
-    { name: "Configurate WatchLyst settings (Admin Only)", value: "`/setup [Channel] [Role] [Toggle Pings]`" }
+    { name: "Configurate WatchLyst settings (Admin Only)", value: "`/setup [Channel] [Role] [Toggle Pings]`" },
   )
   .setFooter({ text: `Version ${PackageJson.version}` });
 
