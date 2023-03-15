@@ -14,7 +14,7 @@ export class Update {
       description: "The ID of the user being updated (17-19 digits long)",
       required: true,
     })
-    user: User,
+      user: User,
     @SlashOption({
       type: ApplicationCommandOptionType.String,
       name: "reason",
@@ -22,8 +22,8 @@ export class Update {
       required: false,
       maxLength: 999,
     })
-    reason: string,
-    interaction: CommandInteraction): Promise<void> {
+      reason: string,
+      interaction: CommandInteraction): Promise<void> {
     const serverQuery = await Servers.findOne({ where: { server_id: interaction.guild?.id } });
     const isAdmin = (interaction.member?.permissions as PermissionsBitField).has(PermissionsBitField.Flags.Administrator);
     const hasRole = (interaction.member?.roles as GuildMemberRoleManager).cache.has(serverQuery?.role_id as string);
@@ -45,7 +45,7 @@ const userUpdatedEmbed = (user: User, reason: string | undefined) => new EmbedBu
   .setColor(watchlystConfig.colorGreen as ColorResolvable)
   .setDescription(`${emojiList.ok} ${user.tag} (${user.id})'s reason has been updated.`)
   .setFields(
-    { name: "New reason:", value: reason ?? "No reason provided." }
+    { name: "New reason:", value: reason ?? "No reason provided." },
   );
 
 const errorEmbed = (description: string) => new EmbedBuilder()

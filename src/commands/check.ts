@@ -14,8 +14,8 @@ export class Check {
       description: "The ID of the user being checked (17-19 digits long)",
       required: true,
     })
-    user: User,
-    interaction: CommandInteraction): Promise<void> {
+      user: User,
+      interaction: CommandInteraction): Promise<void> {
     const serverQuery = await Servers.findOne({ where: { server_id: interaction.guild?.id } });
     const isAdmin = (interaction.member?.permissions as PermissionsBitField).has(PermissionsBitField.Flags.Administrator);
     const hasRole = (interaction.member?.roles as GuildMemberRoleManager).cache.has(serverQuery?.role_id as string);
@@ -33,18 +33,18 @@ export class Check {
 }
 
 const userInfoEmbed = (user: User, userQuery: UserList) => {
-  const dateAddedFormatted = new Date(userQuery.date_added).toLocaleDateString('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric'
+  const dateAddedFormatted = new Date(userQuery.date_added).toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
   });
   return new EmbedBuilder()
     .setColor(watchlystConfig.colorYellow as ColorResolvable)
     .setFields(
       {
         name: `${user.tag} | ID: ${user.id} - Listed by: ${userQuery.added_by}`,
-        value: `${userQuery.reason ?? "No reason provided."} - Listed at ${dateAddedFormatted}`
-      }
+        value: `${userQuery.reason ?? "No reason provided."} - Listed at ${dateAddedFormatted}`,
+      },
     );
 };
 

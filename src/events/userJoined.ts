@@ -7,7 +7,7 @@ import UserList from "../database/models/UserList.js";
 @Discord()
 export class UserJoined {
   @On({ event: "guildMemberAdd" })
-  async userJoined([newUser]: ArgsOf<'guildMemberAdd'>) {
+  async userJoined([newUser]: ArgsOf<"guildMemberAdd">) {
     const userQuery = await UserList.findOne({ where: { user_id: newUser.id, server_id: newUser.guild.id } });
     if (userQuery === null) return;
 
@@ -18,8 +18,9 @@ export class UserJoined {
         .setFooter({ text: "Tip: You can assign a channel for WatchLyst to send notifications like these by using `/config` in your server." });
       return void await guildOwner.send({ embeds: [listedUserJoinedNofityOwner] })
         .catch((error) => { // Cannot send messages to this user
+          // eslint-disable-next-line no-magic-numbers, no-useless-return
           if (error.code === 50007) return;
-        });;
+        });
     }
 
     let pingRoleMessage = undefined;
@@ -34,10 +35,10 @@ export class UserJoined {
 }
 
 const listedUserJoinedEmbed = (user: GuildMember, userQuery: UserList) => {
-  const dateAddedFormatted = new Date(userQuery.date_added).toLocaleDateString('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric'
+  const dateAddedFormatted = new Date(userQuery.date_added).toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
   });
   return new EmbedBuilder()
     .setColor(watchlystConfig.colorYellow as ColorResolvable)

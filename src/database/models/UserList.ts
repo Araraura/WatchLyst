@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, AllowNull, AutoIncrement, Default, BelongsTo, Unique } from "sequelize-typescript";
 import Servers from "./Servers.js";
 

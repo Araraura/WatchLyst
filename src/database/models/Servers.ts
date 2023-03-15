@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { Table, Column, Model, DataType, PrimaryKey, Unique, AllowNull, AutoIncrement, Default, HasMany } from "sequelize-typescript";
 import UserList from "./UserList.js";
 
