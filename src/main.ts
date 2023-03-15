@@ -1,6 +1,5 @@
 import { dirname, importx } from "@discordx/importer";
-import { ActivityType, Interaction } from "discord.js";
-import { IntentsBitField, Partials } from "discord.js";
+import { ActivityType, Interaction, IntentsBitField, Partials } from "discord.js";
 import { Client } from "discordx";
 import database from "./database/index.js";
 

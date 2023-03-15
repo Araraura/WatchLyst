@@ -14,7 +14,7 @@ export class Add {
       description: "The ID of the user being added (17-19 digits long)",
       required: true,
     })
-    user: User,
+      user: User,
     @SlashOption({
       type: ApplicationCommandOptionType.String,
       name: "reason",
@@ -22,8 +22,8 @@ export class Add {
       required: false,
       maxLength: 999,
     })
-    reason: string,
-    interaction: CommandInteraction): Promise<void> {
+      reason: string,
+      interaction: CommandInteraction): Promise<void> {
     const serverQuery = await Servers.findOne({ where: { server_id: interaction.guild?.id } });
     const isAdmin = (interaction.member?.permissions as PermissionsBitField).has(PermissionsBitField.Flags.Administrator);
     const hasRole = (interaction.member?.roles as GuildMemberRoleManager).cache.has(serverQuery?.role_id as string);
@@ -57,7 +57,7 @@ const userAddedEmbed = (user: User, reason: string | undefined) => new EmbedBuil
   .setColor(watchlystConfig.colorGreen as ColorResolvable)
   .setDescription(`${emojiList.ok} ${user.tag} (${user.id}) has been added to the server's WatchLyst.`)
   .setFields(
-    { name: "Reason for adding:", value: reason ?? "No reason provided." }
+    { name: "Reason for adding:", value: reason ?? "No reason provided." },
   );
 
 const errorEmbed = (description: string) => new EmbedBuilder()

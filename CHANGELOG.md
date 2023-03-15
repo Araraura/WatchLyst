@@ -1,4 +1,15 @@
-### 2.0.1 = February 13 2023
+### 2.0.3 - March 15 2023
+- Updated icon credit in README.md
+- Small change in `/config` description
+- Now calls avatarURL instead of hardcoded URL
+- Updated packages and discord.js to 14.8.0
+- Properly added ESLint and linted all files
+
+### 2.0.2 - February 22 2023
+- Removed unnecessary intents
+- Small change in `/config` description
+
+### 2.0.1 - February 13 2023
 - Fixed a bug where the bot would crash when it leaves a server
 - Lists now display the newest entries first
 

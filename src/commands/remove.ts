@@ -14,8 +14,8 @@ export class Remove {
       description: "The ID of the user being removed (17-19 digits long)",
       required: true,
     })
-    user: User,
-    interaction: CommandInteraction): Promise<void> {
+      user: User,
+      interaction: CommandInteraction): Promise<void> {
     const serverQuery = await Servers.findOne({ where: { server_id: interaction.guild?.id } });
     const isAdmin = (interaction.member?.permissions as PermissionsBitField).has(PermissionsBitField.Flags.Administrator);
     const hasRole = (interaction.member?.roles as GuildMemberRoleManager).cache.has(serverQuery?.role_id as string);

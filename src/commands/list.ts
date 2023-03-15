@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { ColorResolvable, CommandInteraction, EmbedBuilder, GuildMemberRoleManager, PermissionsBitField, ApplicationCommandOptionType, ActionRowBuilder, MessageActionRowComponentBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, BaseInteraction } from "discord.js";
 import { ButtonComponent, Discord, Slash, SlashOption } from "discordx";
 import { watchlystConfig, emojiList } from "../config/botConfig.js";
@@ -17,8 +18,8 @@ export class List {
       minValue: 1,
       required: false,
     })
-    page: number,
-    interaction: CommandInteraction): Promise<void> {
+      page: number,
+      interaction: CommandInteraction): Promise<void> {
     const serverQuery = await Servers.findOne({ where: { server_id: interaction.guild?.id } });
     const isAdmin = (interaction.member?.permissions as PermissionsBitField).has(PermissionsBitField.Flags.Administrator);
     const hasRole = (interaction.member?.roles as GuildMemberRoleManager).cache.has(serverQuery?.role_id as string);
@@ -36,7 +37,7 @@ export class List {
     const currPage = this.getPage(interaction);
     await interaction.reply({
       embeds: [await userListEmbed(usersQuery, currPage, interaction)],
-      components: [navigationButtonsRow(currPage === 1, currPage === lastPage)]
+      components: [navigationButtonsRow(currPage === 1, currPage === lastPage)],
     });
   }
 
@@ -48,7 +49,7 @@ export class List {
     const isOnLastPage = Math.ceil(usersQuery.length / 7) === currPage;
     interaction.update({
       embeds: [await userListEmbed(usersQuery, currPage, interaction)],
-      components: [navigationButtonsRow(false, isOnLastPage)]
+      components: [navigationButtonsRow(false, isOnLastPage)],
     });
   }
 
@@ -59,7 +60,7 @@ export class List {
     const currPage = this.getPage(interaction);
     interaction.update({
       embeds: [await userListEmbed(usersQuery, currPage, interaction)],
-      components: [navigationButtonsRow(currPage === 1, false)]
+      components: [navigationButtonsRow(currPage === 1, false)],
     });
   }
 
@@ -91,7 +92,7 @@ const userListEmbed = async (usersQuery: UserList[], page: number, interaction: 
     const truncatedReason = (user.reason as string)?.length >= 200 ? `${user.reason?.substring(0, 200)}...` : user.reason ?? "No reason provided";
     listEmbed.addFields({
       name: `${fetchedUserTag} (${user.user_id}) - Listed by ${user.added_by}`,
-      value: `${truncatedReason} - Listed at ${formatDate(user.date_added)}`
+      value: `${truncatedReason} - Listed at ${formatDate(user.date_added)}`,
     });
   }
   listEmbed.setFooter({ text: `Page ${page} of ${Math.ceil(usersQuery.length / 7)}` });
@@ -100,10 +101,10 @@ const userListEmbed = async (usersQuery: UserList[], page: number, interaction: 
 };
 
 const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric'
+  new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
   });
 
 const nextPageButton = (isDisabled: boolean) => new ButtonBuilder()

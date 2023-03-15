@@ -7,7 +7,7 @@ import UserList from "../database/models/UserList.js";
 @Discord()
 export class UserLeft {
   @On({ event: "guildMemberRemove" })
-  async userLeft([leavingUser]: ArgsOf<'guildMemberRemove'>) {
+  async userLeft([leavingUser]: ArgsOf<"guildMemberRemove">) {
     const userQuery = await UserList.findOne({ where: { user_id: leavingUser.id, server_id: leavingUser.guild.id } });
     if (userQuery === null) return;
 
@@ -18,8 +18,9 @@ export class UserLeft {
         .setFooter({ text: "Tip: You can assign a channel for WatchLyst to send notifications like these by using `/config` in your server." });
       return void await guildOwner.send({ embeds: [listedUserLeftNofityOwner] })
         .catch((error) => { // Cannot send messages to this user
+          // eslint-disable-next-line no-magic-numbers, no-useless-return
           if (error.code === 50007) return;
-        });;
+        });
     }
 
     const channelToSend = await leavingUser.guild.channels.fetch(serverQuery?.channel_id as string) as TextChannel;
@@ -28,10 +29,10 @@ export class UserLeft {
 }
 
 const listedUserLeftEmbed = (user: GuildMember, userQuery: UserList) => {
-  const dateAddedFormatted = new Date(userQuery.date_added).toLocaleDateString('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric'
+  const dateAddedFormatted = new Date(userQuery.date_added).toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
   });
   return new EmbedBuilder()
     .setColor(watchlystConfig.colorYellow as ColorResolvable)

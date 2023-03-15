@@ -6,7 +6,7 @@ import Servers from "../database/models/Servers.js";
 @Discord()
 export class ChannelDeleted {
   @On({ event: "channelDelete" })
-  async channelDeleted([deletedChannel]: ArgsOf<'channelDelete'>) {
+  async channelDeleted([deletedChannel]: ArgsOf<"channelDelete">) {
     const serverQuery = await Servers.findOne({ where: { server_id: (deletedChannel as TextChannel).guildId } });
     if (serverQuery?.channel_id === null || serverQuery?.channel_id !== deletedChannel.id) return;
 
@@ -15,6 +15,7 @@ export class ChannelDeleted {
     const guildOwner = await (deletedChannel as TextChannel).guild.fetchOwner();
     await guildOwner.send({ embeds: [assignedChannelDeletedEmbed(deletedChannel as TextChannel)] })
       .catch((error) => { // Cannot send messages to this user
+        // eslint-disable-next-line no-magic-numbers, no-useless-return
         if (error.code === 50007) return;
       });
   }

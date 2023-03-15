@@ -6,7 +6,7 @@ import Servers from "../database/models/Servers.js";
 @Discord()
 export class RoleDeleted {
   @On({ event: "roleDelete" })
-  async roleDeleted([deletedRole]: ArgsOf<'roleDelete'>) {
+  async roleDeleted([deletedRole]: ArgsOf<"roleDelete">) {
     const serverQuery = await Servers.findOne({ where: { server_id: deletedRole.guild.id } });
     if (serverQuery?.role_id === null || serverQuery?.role_id !== deletedRole.id) return;
 
@@ -15,6 +15,7 @@ export class RoleDeleted {
     const guildOwner = await deletedRole.guild.fetchOwner();
     await guildOwner.send({ embeds: [assignedRoleDeletedEmbed(deletedRole)] })
       .catch((error) => { // Cannot send messages to this user
+        // eslint-disable-next-line no-magic-numbers, no-useless-return
         if (error.code === 50007) return;
       });
   }

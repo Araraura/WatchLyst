@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://i.imgur.com/WUXKZzZ.png" alt="WatchLyst Logo"/>
-  <p align="center">Thanks <a href="https://twitter.com/MarcelSteak2">@MarcelSteak2</a> for the logo!</p>
+  <p align="center">Thanks <a href="https://twitter.com/MarcelSteak3">@MarcelSteak3</a> for the icon!</p>
   <hr />
 </p>
 
