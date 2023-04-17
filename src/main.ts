@@ -33,7 +33,10 @@ bot.once("ready", async () => {
   //   ...bot.guilds.cache.map((g) => g.id)
   // );
 
-  bot.user?.setActivity({ name: "/help", type: ActivityType.Listening });
+  const resetTimer = 3600000;
+  setInterval(() => {
+    bot.user?.setActivity({ name: "/help", type: ActivityType.Listening });
+  }, resetTimer);
 
   console.log("Bot started");
 });
