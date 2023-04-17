@@ -1,3 +1,7 @@
+### 2.0.4 - April 17 2023
+- Updated packages
+- Bot status now resets once an hour (Fixes a bug where the status would disappear after starting bot)
+
 ### 2.0.3 - March 15 2023
 - Updated icon credit in README.md
 - Small change in `/config` description
