@@ -1,7 +1,7 @@
 import { ColorResolvable, EmbedBuilder } from "discord.js";
 import { ArgsOf, Discord, On } from "discordx";
 import { watchlystConfig, emojiList } from "../config/botConfig.js";
-import PackageJson from "../../package.json" assert { type: "json" };
+import PackageJSON from "../../package.json" assert { type: "json" };
 import Servers from "../database/models/Servers.js";
 
 @Discord()
@@ -42,5 +42,5 @@ const errorMessageEmbed = (exception: string, authorTag: string) => new EmbedBui
 
 const errorMessage = (exception: string, authorTag: string) =>
   `An error occurred when WatchLyst tried to join your server. Please kick WatchLyst from the server and [reinvite it](${watchlystConfig.inviteLink}).
-  \nIf the error persists, contact ${authorTag} or open a new issues at the ${emojiList.github} [GitHub](${PackageJson.bugs.url}).
+  \nIf the error persists, contact ${authorTag} or open a new issues at the ${emojiList.github} [GitHub](${PackageJSON.bugs.url}).
   \n${exception}`;
