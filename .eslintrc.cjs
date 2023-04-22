@@ -40,7 +40,7 @@ module.exports = {
     "no-empty-function": "error",
     "no-floating-decimal": "error",
     "no-lonely-if": "error",
-    "no-magic-numbers": "error",
+    "no-magic-numbers": ["error", { "ignore": [-1, 0, 1] }],
     "no-mixed-operators": "error",
     "no-multi-spaces": "error",
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0, "maxBOF": 0 }],
