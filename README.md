@@ -1,3 +1,6 @@
+> [!WARNING]
+> WatchLyst has been discontinued. The bot will no longer function.
+
 # WatchLyst
 
 <p align="center">
